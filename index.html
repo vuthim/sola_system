@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solar System 3D - Ultimate Space Experience</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- ============================================
+         LOADING SCREEN
+    ============================================= -->
+    <div class="loading-screen" id="loading">
+        <div class="loading-system">
+            <div class="loading-orbit"></div>
+            <div class="loading-orbit"></div>
+            <div class="loading-orbit"></div>
+        </div>
+        <div class="loading-title">Solar System</div>
+        <div class="loading-bar-container">
+            <div class="loading-bar"></div>
+        </div>
+        <div class="loading-status" id="loadingStatus">Initializing...</div>
+        <div class="loading-tips">
+            Press <kbd>H</kbd> for keyboard shortcuts • Click planets to learn more
+        </div>
+    </div>
+
+    <!-- Notification toast -->
+    <div class="notification" id="notification">Screenshot saved!</div>
+
+    <!-- Three.js Canvas container -->
+    <div id="canvas-container"></div>
+
+    <!-- ============================================
+         UI OVERLAY
+    ============================================= -->
+    <div class="ui-overlay">
+        
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="title-section ui-interactive">
+                <div class="main-title">Solar System</div>
+                <div class="subtitle">Interactive Space Experience</div>
+            </div>
+
+            <div class="date-display ui-interactive">
+                <div class="date-label">Current Date</div>
+                <div class="current-date" id="currentDate">Jan 1, 2024</div>
+            </div>
+
+            <div class="top-actions ui-interactive">
+                <button class="action-btn" id="btnCompare" title="Compare Planets">⚖</button>
+                <button class="action-btn" id="btnSound" title="Toggle Sound">🔇</button>
+                <button class="action-btn" id="btnFullscreen" title="Fullscreen">⛶</button>
+            </div>
+        </div>
+
+        <!-- Planet Info Panel (Right) -->
+        <div class="planet-info ui-interactive" id="planetInfo">
+            <div class="planet-info-header">
+                <div class="planet-icon" id="planetIcon"></div>
+                <div>
+                    <h2 id="planetName">Earth</h2>
+                    <div class="planet-type" id="planetType">Terrestrial Planet</div>
+                </div>
+            </div>
+            <div class="planet-grid">
+                <div class="planet-stat">
+                    <div class="planet-stat-label">Distance from Sun</div>
+                    <div class="planet-stat-value" id="planetDistance">149.6M km</div>
+                </div>
+                <div class="planet-stat">
+                    <div class="planet-stat-label">Orbital Period</div>
+                    <div class="planet-stat-value" id="planetPeriod">365 days</div>
+                </div>
+                <div class="planet-stat">
+                    <div class="planet-stat-label">Diameter</div>
+                    <div class="planet-stat-value" id="planetDiameter">12,742 km</div>
+                </div>
+                <div class="planet-stat">
+                    <div class="planet-stat-label">Day Length</div>
+                    <div class="planet-stat-value" id="planetDay">24 hours</div>
+                </div>
+                <div class="planet-stat">
+                    <div class="planet-stat-label">Moons</div>
+                    <div class="planet-stat-value" id="planetMoons">1</div>
+                </div>
+                <div class="planet-stat">
+                    <div class="planet-stat-label">Gravity</div>
+                    <div class="planet-stat-value" id="planetGravity">9.8 m/s²</div>
+                </div>
+            </div>
+            <div class="planet-description" id="planetDescription">
+                The only astronomical object known to harbor life.
+            </div>
+        </div>
+
+        <!-- Controls Panel (Left) -->
+        <div class="controls-section ui-interactive">
+            <!-- Time Controls -->
+            <div class="control-group">
+                <div class="control-label"><span class="icon">⏱</span> Time Control</div>
+                <div class="time-controls">
+                    <button class="time-btn" id="btnPause" title="Pause">⏸</button>
+                    <button class="time-btn active" id="btnPlay" title="Play">▶</button>
+                    <button class="time-btn" id="btnFast" title="Fast Forward">⏩</button>
+                    <button class="time-btn" id="btnReset" title="Reset">↺</button>
+                </div>
+                <div class="slider-container">
+                    <input type="range" class="speed-slider" id="speedSlider" min="0" max="200" value="20">
+                    <span class="speed-value" id="speedValue">1x</span>
+                </div>
+            </div>
+
+            <!-- Display Options -->
+            <div class="control-group">
+                <div class="control-label"><span class="icon">👁</span> Display Options</div>
+                <div class="checkbox-grid">
+                    <label class="checkbox-item">
+                        <input type="checkbox" id="showOrbits" checked>
+                        <span class="checkbox-custom"></span>
+                        <span class="checkbox-label">Orbits</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" id="showTrails" checked>
+                        <span class="checkbox-custom"></span>
+                        <span class="checkbox-label">Trails</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" id="showAsteroids" checked>
+                        <span class="checkbox-custom"></span>
+                        <span class="checkbox-label">Asteroids</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" id="showConstellations">
+                        <span class="checkbox-custom"></span>
+                        <span class="checkbox-label">Constellations</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" id="showLabels" checked>
+                        <span class="checkbox-custom"></span>
+                        <span class="checkbox-label">Labels</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" id="showComet" checked>
+                        <span class="checkbox-custom"></span>
+                        <span class="checkbox-label">Comet</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Planet Selection -->
+            <div class="control-group">
+                <div class="control-label"><span class="icon">🪐</span> Select Body</div>
+                <div class="planet-buttons">
+                    <button class="planet-btn btn-sun" data-name="Sun" data-planet="sun"></button>
+                    <button class="planet-btn btn-mercury" data-name="Mercury" data-planet="mercury"></button>
+                    <button class="planet-btn btn-venus" data-name="Venus" data-planet="venus"></button>
+                    <button class="planet-btn btn-earth active" data-name="Earth" data-planet="earth"></button>
+                    <button class="planet-btn btn-moon" data-name="Moon" data-planet="moon"></button>
+                    <button class="planet-btn btn-mars" data-name="Mars" data-planet="mars"></button>
+                    <button class="planet-btn btn-ceres" data-name="Ceres" data-planet="ceres"></button>
+                    <button class="planet-btn btn-jupiter" data-name="Jupiter" data-planet="jupiter"></button>
+                    <button class="planet-btn btn-saturn" data-name="Saturn" data-planet="saturn"></button>
+                    <button class="planet-btn btn-uranus" data-name="Uranus" data-planet="uranus"></button>
+                    <button class="planet-btn btn-neptune" data-name="Neptune" data-planet="neptune"></button>
+                    <button class="planet-btn btn-pluto" data-name="Pluto" data-planet="pluto"></button>
+                    <button class="planet-btn btn-comet" data-name="Comet" data-planet="comet"></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Camera Panel (Right Bottom) -->
+        <div class="camera-panel ui-interactive">
+            <div class="control-label">Camera View</div>
+            <button class="cam-btn" id="camFree">Free Camera <span class="shortcut">F</span></button>
+            <button class="cam-btn active" id="camTop">Top View <span class="shortcut">T</span></button>
+            <button class="cam-btn" id="camSide">Side View <span class="shortcut">S</span></button>
+            <button class="cam-btn" id="camSun">Sun View <span class="shortcut">U</span></button>
+            <button class="cam-btn" id="camEarth">Earth View <span class="shortcut">E</span></button>
+        </div>
+
+        <!-- Help Text (Bottom) -->
+        <div class="help-text">
+            <kbd>H</kbd> Toggle Help • <kbd>WASD</kbd> Move • <kbd>Q/E</kbd> Rotate • <kbd>Click</kbd> Select • <kbd>P</kbd> Screenshot
+        </div>
+    </div>
+
+    <!-- Visual Effects -->
+    <div class="scanlines"></div>
+    <div class="vignette"></div>
+
+    <!-- Comparison Modal -->
+    <div class="modal" id="compareModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Compare Planets</h2>
+                <button class="modal-close" id="closeModal">×</button>
+            </div>
+            <div class="comparison-grid" id="comparisonGrid"></div>
+            <div id="comparisonResult"></div>
+        </div>
+    </div>
+
+    <!-- Three.js Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+    <!-- Application Scripts -->
+    <script src="js/data.js"></script>
+    <script src="js/effects.js"></script>
+    <script src="js/planets.js"></script>
+    <script src="js/controls.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

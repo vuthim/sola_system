@@ -17,8 +17,12 @@ const planetGroup = new THREE.Group();
 
 /**
  * Initialize planet system
+ * @param {THREE.Scene} appScene - The Three.js scene
+ * @param {Object} data - The planet data object
  */
-function initPlanetSystem() {
+function initPlanetSystem(appScene, data) {
+    scene = appScene;
+    planetData = data;
     scene.add(planetGroup);
 }
 

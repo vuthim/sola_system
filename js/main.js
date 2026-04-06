@@ -112,29 +112,29 @@ function setupEffects() {
     };
     
     // Create stars
-    stars = createStars();
+    stars = createStars(scene);
     
     // Create nebula
-    nebula = createNebula();
+    nebula = createNebula(scene);
     
     // Create Sun
-    sunGroup = createSun();
+    sunGroup = createSun(scene);
     effectsModule.sunGroup = sunGroup;
     
     // Create asteroid belt
-    asteroidGroup = createAsteroidBelt();
+    asteroidGroup = createAsteroidBelt(scene);
     effectsModule.asteroidGroup = asteroidGroup;
     
     // Create Kuiper Belt
-    kuiperGroup = createKuiperBelt();
+    kuiperGroup = createKuiperBelt(scene);
     effectsModule.kuiperGroup = kuiperGroup;
     
     // Create comet
-    comet = createComet();
+    comet = createComet(scene);
     effectsModule.comet = comet;
     
     // Create constellations
-    constellationLines = createConstellations();
+    constellationLines = createConstellations(scene);
     effectsModule.constellationLines = constellationLines;
 }
 
@@ -159,7 +159,7 @@ function setupPlanets() {
     };
     
     // Initialize planet group
-    initPlanetSystem();
+    initPlanetSystem(scene, planetData);
     
     // Create all planets
     createAllPlanets();

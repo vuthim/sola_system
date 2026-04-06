@@ -10,8 +10,9 @@ let scene;
 
 /**
  * Create starfield background
+ * @param {THREE.Scene} scene - The Three.js scene
  */
-function createStars() {
+function createStars(scene) {
     const starsGeometry = new THREE.BufferGeometry();
     const starCount = 20000;
     const positions = new Float32Array(starCount * 3);
@@ -64,8 +65,9 @@ function createStars() {
 
 /**
  * Create nebula cloud effects
+ * @param {THREE.Scene} scene - The Three.js scene
  */
-function createNebula() {
+function createNebula(scene) {
     const nebulaGeometry = new THREE.BufferGeometry();
     const nebulaCount = 600;
     const positions = new Float32Array(nebulaCount * 3);
@@ -106,8 +108,9 @@ function createNebula() {
 
 /**
  * Create asteroid belt between Mars and Jupiter
+ * @param {THREE.Scene} scene - The Three.js scene
  */
-function createAsteroidBelt() {
+function createAsteroidBelt(scene) {
     const asteroidGroup = new THREE.Group();
     const asteroidCount = 2000;
     
@@ -148,8 +151,9 @@ function createAsteroidBelt() {
 
 /**
  * Create Kuiper Belt beyond Neptune
+ * @param {THREE.Scene} scene - The Three.js scene
  */
-function createKuiperBelt() {
+function createKuiperBelt(scene) {
     const kuiperGroup = new THREE.Group();
     const kuiperCount = 1000;
     
@@ -189,8 +193,9 @@ function createKuiperBelt() {
 
 /**
  * Create a comet with tail
+ * @param {THREE.Scene} scene - The Three.js scene
  */
-function createComet() {
+function createComet(scene) {
     const cometGroup = new THREE.Group();
     
     // Comet's nucleus (solid core)
@@ -254,8 +259,9 @@ function createComet() {
 
 /**
  * Create constellation lines
+ * @param {THREE.Scene} scene - The Three.js scene
  */
-function createConstellations() {
+function createConstellations(scene) {
     const constellationsGroup = new THREE.Group();
     const linesGroup = new THREE.Group();
     
@@ -313,8 +319,9 @@ function createConstellations() {
 
 /**
  * Create the Sun with glow effects
+ * @param {THREE.Scene} scene - The Three.js scene
  */
-function createSun() {
+function createSun(scene) {
     const sunGroup = new THREE.Group();
 
     // Sun Core

@@ -5,8 +5,8 @@
  * ============================================
  */
 
-const planetData = {
-    // THE SUN - Our star
+var planetData = {
+    // THE SUN
     sun: { 
         name: 'Sun', 
         type: 'Star',
@@ -21,7 +21,7 @@ const planetData = {
         size: 35,
         color: 0xffff00,
         emissive: 0xff8800,
-        description: 'The Sun is the star at the center of our Solar System. It is a nearly perfect sphere of hot plasma.'
+        description: 'The Sun is the star at the center of our Solar System.'
     },
 
     // TERRESTRIAL PLANETS
@@ -56,7 +56,7 @@ const planetData = {
         size: 2.8,
         color: 0xe6c87a,
         emissive: 0x997700,
-        description: 'Earth\'s sister planet with a toxic atmosphere of sulfuric acid clouds.'
+        description: 'Earth\'s sister planet with a toxic atmosphere.'
     },
     
     earth: { 
@@ -91,7 +91,7 @@ const planetData = {
         size: 0.8,
         color: 0xcccccc,
         emissive: 0x888888,
-        description: 'Earth\'s only natural satellite, the fifth largest in the solar system.'
+        description: 'Earth\'s only natural satellite.'
     },
     
     mars: { 
@@ -108,7 +108,7 @@ const planetData = {
         size: 2.2,
         color: 0xff6b4a,
         emissive: 0x992200,
-        description: 'The Red Planet has the largest volcano in the solar system.'
+        description: 'The Red Planet.'
     },
 
     // DWARF PLANETS & ASTEROIDS
@@ -126,7 +126,7 @@ const planetData = {
         size: 0.5,
         color: 0x888888,
         emissive: 0x555555,
-        description: 'The largest object in the asteroid belt between Mars and Jupiter.'
+        description: 'The largest object in the asteroid belt.'
     },
 
     // GAS GIANTS
@@ -144,7 +144,7 @@ const planetData = {
         size: 12,
         color: 0xd4a574,
         emissive: 0x886622,
-        description: 'The largest planet with a storm larger than Earth - the Great Red Spot.'
+        description: 'The largest planet with the Great Red Spot.'
     },
     
     saturn: { 
@@ -161,7 +161,7 @@ const planetData = {
         size: 10,
         color: 0xf4d58d,
         emissive: 0xaa8800,
-        description: 'Famous for its spectacular ring system made of ice and rock.'
+        description: 'Famous for its spectacular ring system.'
     },
 
     // ICE GIANTS
@@ -179,7 +179,7 @@ const planetData = {
         size: 5.5,
         color: 0x7fdbff,
         emissive: 0x0088aa,
-        description: 'An ice giant that rotates on its side with 13 known rings.'
+        description: 'An ice giant that rotates on its side.'
     },
     
     neptune: { 
@@ -196,7 +196,7 @@ const planetData = {
         size: 5.2,
         color: 0x4a6dff,
         emissive: 0x0033aa,
-        description: 'The windiest planet with speeds over 2,000 km/h.'
+        description: 'The windiest planet.'
     },
 
     // TRANS-NEPTUNIAN OBJECTS
@@ -214,11 +214,6 @@ const planetData = {
         size: 1.2,
         color: 0xd4a588,
         emissive: 0x8b6b4a,
-        description: 'A dwarf planet in the Kuiper belt, once considered the ninth planet.'
+        description: 'A dwarf planet in the Kuiper belt.'
     }
 };
-
-// Export for use in other modules
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { planetData };
-}

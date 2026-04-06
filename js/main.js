@@ -5,24 +5,15 @@
  * ============================================
  */
 
-// Three.js core objects
-let scene, camera, renderer, controls;
-
-// Visual effects
-let stars, nebula, sunGroup, asteroidGroup, kuiperGroup, comet, constellationLines;
-
-// Planet system
-let planetModule, effectsModule, controlsModule;
-
-// ============================================
-// INITIALIZATION
-// ============================================
+var scene, camera, renderer, controls;
+var stars, nebula, sunGroup, asteroidGroup, kuiperGroup, comet, constellationLines;
+var planetModule, effectsModule, controlsModule;
+var planetData;
 
 function init() {
-    // Create scene
     scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x000510);
     
-    // Create camera
     camera = new THREE.PerspectiveCamera(
         60,
         window.innerWidth / window.innerHeight,
@@ -30,11 +21,10 @@ function init() {
         15000
     );
     
-    // Create renderer
     renderer = new THREE.WebGLRenderer({
         antialias: true,
         alpha: true,
-        preserveDrawingBuffer: true  // For screenshots
+        preserveDrawingBuffer: true
     });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -45,65 +35,46 @@ function init() {
     
     document.getElementById('canvas-container').appendChild(renderer.domElement);
     
-    // Setup OrbitControls
     controls = new THREE.OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
     controls.minDistance = 20;
     controls.maxDistance = 3000;
     
-    // Setup lighting
     setupLighting();
-    
-    // Setup effects
     setupEffects();
-    
-    // Setup planets
     setupPlanets();
-    
-    // Setup controls
     setupControls();
     
-    // Initial camera position
     camera.position.set(0, 600, 0);
     camera.lookAt(0, 0, 0);
     controls.update();
     
-    // Setup resize handler
     window.addEventListener('resize', onWindowResize);
     
-    // Start loading animation
     startLoading();
 }
 
-/**
- * Setup scene lighting
- */
 function setupLighting() {
-    // Ambient light (soft overall illumination)
-    const ambientLight = new THREE.AmbientLight(0x222233, 0.5);
+    var ambientLight = new THREE.AmbientLight(0x222233, 0.5);
     scene.add(ambientLight);
     
-    // Sun light (point light from Sun)
-    const sunLight = new THREE.PointLight(0xffffee, 3, 4000);
+    var sunLight = new THREE.PointLight(0xffffee, 3, 4000);
     sunLight.castShadow = true;
     sunLight.shadow.mapSize.width = 2048;
     sunLight.shadow.mapSize.height = 2048;
     scene.add(sunLight);
 }
 
-/**
- * Setup visual effects
- */
 function setupEffects() {
     effectsModule = {
-        createStars,
-        createNebula,
-        createAsteroidBelt,
-        createKuiperBelt,
-        createComet,
-        createConstellations,
-        createSun,
+        createStars: createStars,
+        createNebula: createNebula,
+        createAsteroidBelt: createAsteroidBelt,
+        createKuiperBelt: createKuiperBelt,
+        createComet: createComet,
+        createConstellations: createConstellations,
+        createSun: createSun,
         asteroidGroup: null,
         kuiperGroup: null,
         comet: null,
@@ -111,80 +82,60 @@ function setupEffects() {
         sunGroup: null
     };
     
-    // Create stars
     stars = createStars(scene);
-    
-    // Create nebula
     nebula = createNebula(scene);
-    
-    // Create Sun
     sunGroup = createSun(scene);
     effectsModule.sunGroup = sunGroup;
     
-    // Create asteroid belt
     asteroidGroup = createAsteroidBelt(scene);
     effectsModule.asteroidGroup = asteroidGroup;
     
-    // Create Kuiper Belt
     kuiperGroup = createKuiperBelt(scene);
     effectsModule.kuiperGroup = kuiperGroup;
     
-    // Create comet
     comet = createComet(scene);
     effectsModule.comet = comet;
     
-    // Create constellations
     constellationLines = createConstellations(scene);
     effectsModule.constellationLines = constellationLines;
 }
 
-/**
- * Setup planets
- */
 function setupPlanets() {
     planetModule = {
-        initPlanetSystem,
-        createPlanet,
-        createMoon,
-        createAllPlanets,
-        updatePlanets,
-        updateMoon,
-        toggleOrbits,
-        toggleTrails,
-        getPlanet,
-        getPlanetMeshes,
-        planets,
-        orbits,
-        planetTrails
+        initPlanetSystem: initPlanetSystem,
+        createPlanet: createPlanet,
+        createMoon: createMoon,
+        createAllPlanets: createAllPlanets,
+        updatePlanets: updatePlanets,
+        updateMoon: updateMoon,
+        toggleOrbits: toggleOrbits,
+        toggleTrails: toggleTrails,
+        getPlanet: getPlanet,
+        getPlanetMeshes: getPlanetMeshes,
+        planets: planets,
+        orbits: orbits,
+        planetTrails: planetTrails
     };
     
-    // Initialize planet group
     initPlanetSystem(scene, planetData);
-    
-    // Create all planets
     createAllPlanets();
 }
 
-/**
- * Setup controls
- */
 function setupControls() {
     controlsModule = {
-        initControls,
-        setModules,
-        setupKeyboardControls,
-        setupMouseControls,
-        setupUIEventListeners,
-        getState,
-        updateCamera,
-        updateDate,
-        keys
+        initControls: initControls,
+        setModules: setModules,
+        setupKeyboardControls: setupKeyboardControls,
+        setupMouseControls: setupMouseControls,
+        setupUIEventListeners: setupUIEventListeners,
+        getState: getState,
+        updateCamera: updateCamera,
+        updateDate: updateDate,
+        keys: keys
     };
     
-    // Initialize controls with Three.js references
     initControls(camera, renderer, scene, controls);
     
-    // Set up module references for controls
     controlsModule.setModules(
         planetModule,
         effectsModule,
@@ -194,15 +145,8 @@ function setupControls() {
     );
 }
 
-// ============================================
-// UI FUNCTIONS
-// ============================================
-
-/**
- * Update planet info panel
- */
 function updatePlanetInfo(planetName) {
-    const data = planetData[planetName];
+    var data = planetData[planetName];
     if (!data) return;
     
     document.getElementById('planetName').textContent = data.name;
@@ -215,45 +159,31 @@ function updatePlanetInfo(planetName) {
     document.getElementById('planetGravity').textContent = data.gravity;
     document.getElementById('planetDescription').textContent = data.description;
     
-    // Update icon color
-    const icon = document.getElementById('planetIcon');
-    icon.style.background = `radial-gradient(circle, #${data.color.toString(16).padStart(6, '0')}, #${data.emissive.toString(16).padStart(6, '0')})`;
+    var icon = document.getElementById('planetIcon');
+    icon.style.background = 'radial-gradient(circle, #' + data.color.toString(16).padStart(6, '0') + ', #' + data.emissive.toString(16).padStart(6, '0') + ')';
     
     document.getElementById('planetInfo').classList.add('active');
 }
 
-/**
- * Show notification toast
- */
 function showNotification(message) {
-    const notif = document.getElementById('notification');
+    var notif = document.getElementById('notification');
     notif.textContent = message;
     notif.classList.add('show');
-    setTimeout(() => notif.classList.remove('show'), 2000);
+    setTimeout(function() { notif.classList.remove('show'); }, 2000);
 }
 
-/**
- * Take screenshot
- */
 function takeScreenshot() {
     renderer.render(scene, camera);
-    const link = document.createElement('a');
-    link.download = `solar-system-${Date.now()}.png`;
+    var link = document.createElement('a');
+    link.download = 'solar-system-' + Date.now() + '.png';
     link.href = renderer.domElement.toDataURL('image/png');
     link.click();
     showNotification('Screenshot saved!');
 }
 
-// ============================================
-// LOADING
-// ============================================
-
-/**
- * Start loading screen animation
- */
 function startLoading() {
-    const loadingStatus = document.getElementById('loadingStatus');
-    const loadSteps = [
+    var loadingStatus = document.getElementById('loadingStatus');
+    var loadSteps = [
         'Generating stellar fields...',
         'Creating planetary bodies...',
         'Calculating orbits...',
@@ -262,16 +192,15 @@ function startLoading() {
         'Calibrating sensors...'
     ];
     
-    let loadStep = 0;
-    const loadInterval = setInterval(() => {
+    var loadStep = 0;
+    var loadInterval = setInterval(function() {
         if (loadStep < loadSteps.length) {
             loadingStatus.textContent = loadSteps[loadStep];
             loadStep++;
         }
     }, 400);
     
-    // Hide loading and start animation
-    setTimeout(() => {
+    setTimeout(function() {
         clearInterval(loadInterval);
         loadingStatus.textContent = 'Launch complete!';
         document.getElementById('loading').classList.add('hidden');
@@ -280,74 +209,47 @@ function startLoading() {
     }, 3000);
 }
 
-// ============================================
-// ANIMATION LOOP
-// ============================================
-
-/**
- * Main animation loop
- */
 function animate() {
     requestAnimationFrame(animate);
     
-    const state = controlsModule.getState();
-    const { timeSpeed, isPaused } = state;
+    var state = controlsModule.getState();
+    var timeSpeed = state.timeSpeed;
+    var isPaused = state.isPaused;
     
     if (!isPaused) {
-        // Update date
         controlsModule.updateDate();
         
-        // Update planets
         updatePlanets(timeSpeed, state.showTrails);
-        
-        // Update moon
         updateMoon(timeSpeed);
         
-        // Update comet
         if (comet.visible) {
             comet.userData.angle += comet.userData.orbitSpeed * 0.008 * timeSpeed;
             comet.position.x = Math.cos(comet.userData.angle) * comet.userData.orbitRadius;
             comet.position.z = Math.sin(comet.userData.angle) * comet.userData.orbitRadius;
             comet.position.y = Math.sin(comet.userData.angle * 2) * comet.userData.orbitRadius * comet.userData.tilt;
             
-            // Tail points away from Sun
-            const tailAngle = Math.atan2(comet.position.z, comet.position.x);
+            var tailAngle = Math.atan2(comet.position.z, comet.position.x);
             comet.rotation.y = tailAngle + Math.PI;
         }
         
-        // Rotate asteroid belt
         asteroidGroup.rotation.y += 0.00015 * timeSpeed;
         kuiperGroup.rotation.y += 0.00008 * timeSpeed;
         
-        // Rotate Sun
         sunGroup.rotation.y += 0.0008;
         
-        // Stars rotation
         stars.rotation.y += 0.00002;
     }
     
-    // Update camera
     controlsModule.updateCamera();
-    
-    // Update controls
     controls.update();
     
-    // Render
     renderer.render(scene, camera);
 }
 
-/**
- * Window resize handler
- */
 function onWindowResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-// ============================================
-// START
-// ============================================
-
-// Initialize when DOM is ready
 window.addEventListener('DOMContentLoaded', init);
